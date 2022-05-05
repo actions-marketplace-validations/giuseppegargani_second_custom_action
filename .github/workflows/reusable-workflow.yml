@@ -1,0 +1,40 @@
+name: Reusable workflow example
+
+#SI POSSONO ANCHE METTERE DEGLI INPUT CHE VENGONO PASSATI dal Caller!!! Anche segreti possono essere passati dal caller!!!
+
+on:
+  workflow_call:
+    # inputs:
+    #   username:
+    #     required: true
+    #     type: string
+    # secrets:
+    #   token:
+    #     required: true
+
+jobs:
+  example_job:
+    name: Pass input and secrets to my-action
+    runs-on: ubuntu-latest
+    steps:
+      #- uses: ./.github/workflows/my-action
+        #with:
+          #username: ${{ inputs.username }}
+          #token: ${{ secrets.token }}
+      - name: Verifica File
+        run: echo 'reusable workflow!!!!'
+        shell: bash
+      - name: Verifica File
+        run: |
+          ls
+          cat ./JsonTestReport.json
+          cat JsonTestReport.json
+          #`cat JsonTestReport.json`
+        shell: bash
+
+      - name: Operazioni Firebase DB
+        uses: w9jds/firebase-action@master
+        with:
+          args: database:set --force --debug  --project databasericette-beeb7 /giuseppegargani/ecchime JsonTestReport.json
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_CREDENTIALS }}
